@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_user"
+        android:icon="@drawable/ic_add_user"
+        android:title="@string/toolbar_add_user"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/create_group"
+        android:icon="@drawable/ic_create_group"
+        android:title="@string/toolbar_create_group"
+        app:showAsAction="ifRoom"/>
+</menu>

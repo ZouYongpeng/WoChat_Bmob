@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <!--好友头像-->
+    <ImageView
+        android:id="@+id/friend_head"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/login_user_head"/>
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:text="hello"
+        android:textSize="25sp"
+        android:layout_margin="10dp"/>
+
+</LinearLayout>

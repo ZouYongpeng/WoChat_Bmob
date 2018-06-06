@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">@color/main_color</color>
+    <color name="main_color">#1E90FF</color>
+    <!--18B5EA-->
+
+    <color name="edit_text_color">#fff</color>
+    <color name="separation_line_color">#c9c9c9</color>
+
+    <color name="button_color">@color/main_color</color>
+    <color name="button_text_color">#fff</color>
+    <color name="button_press_color">#bbb</color>
+    <color name="button_uminport_press_color">#FF3030</color>
+
+    <color name="main_text_color">#555</color>
+    <color name="white">#fff</color>
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:padding="5dp"
+        android:text="12:00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/friend_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_user_head"/>
+
+        <TextView
+            android:id="@+id/text_received"
+            android:layout_toRightOf="@id/friend_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/message_left"
+            android:lineSpacingExtra="7dp"
+            android:maxWidth="220dp"
+            android:minWidth="80dp"
+            android:padding="10dp"
+            android:paddingLeft="30dp"
+            android:text="你好你好你好你好你好你好你好你好你好你好你好你好"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

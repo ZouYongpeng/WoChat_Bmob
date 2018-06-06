@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--用户头像-->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/login_user_head"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/login_user_head" />
+
+    <LinearLayout
+        android:id="@+id/login_user_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_user_head"
+        android:orientation="vertical">
+
+        <com.example.wochat_bmob.ui.ClearEditText
+            android:id="@+id/login_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/edit_text_color"
+            android:hint="@string/login_input_name"
+            android:padding="10dp" />
+
+        <!--分割线-->
+        <include layout="@layout/separation_line"/>
+
+        <com.example.wochat_bmob.ui.ClearEditText
+            android:id="@+id/login_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/edit_text_color"
+            android:hint="@string/login_input_password"
+            android:inputType="textPassword"
+            android:padding="10dp"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/remember_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_user_edit"
+        android:layout_marginTop="13dp"
+        android:layout_toStartOf="@+id/login_user_head"
+        android:text="@string/remember_password" />
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/auto_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_button"
+        android:layout_toEndOf="@+id/goto_register"
+        android:text="@string/auto_login" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/remember_password"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/login"
+        android:textColor="@color/button_text_color"
+        android:background="@drawable/button_bg"/>
+
+    <TextView
+        android:id="@+id/goto_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_button"
+        android:layout_marginTop="10dp"
+        android:text="@string/register"
+        android:textColor="@color/main_color"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="60sp">
+
+    <!--好友头像-->
+    <ImageView
+        android:id="@+id/message_friend_head"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/login_user_head"/>
+
+    <!--消息框-->
+    <LinearLayout
+        android:id="@+id/message_container"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <!--名字和向下按钮-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/message_friend_name"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:text="friend"
+                android:textSize="20sp"/>
+
+            <!--向下按钮-->
+            <!--<ImageView
+                android:id="@+id/message_more"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_more_message"/>-->
+            <!--未读数目-->
+            <TextView
+                android:text="1"
+                android:id="@+id/message_unread_count"
+                android:visibility="gone"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/list_newmessage2"
+                android:textSize="13.0dip" />
+            <!--android:visibility="gone"-->
+
+        </LinearLayout>
+
+        <!--消息和事件-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/message_content"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="1"
+                android:text="hahahahahaha"/>
+
+            <TextView
+                android:id="@+id/message_time"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:text="09:00"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
