@@ -37,10 +37,7 @@ public class WoChatApplication extends Application {
         }
     }
 
-    /**
-     * 获取当前运行的进程名
-     * @return
-     */
+    /*获取当前运行的进程名*/
     public static String getMyProcessName() {
         try {
             File file = new File("/proc/" + android.os.Process.myPid() + "/" + "cmdline");

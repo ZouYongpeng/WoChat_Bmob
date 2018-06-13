@@ -146,7 +146,8 @@ public class AddFriendActivity extends BaseActivity{
                 if (e==null){
                     log("list.size()="+list.size());
                     for (int i=0;i<list.size();i++){
-                        if (list.get(i).getName().contains(name)&&!list.get(i).getName().equals(BmobUser.getCurrentUser().getUsername())){
+                        if (list.get(i).getName().toLowerCase().contains(name.toLowerCase())
+                                &&!list.get(i).getName().equals(BmobUser.getCurrentUser().getUsername())){
                             log(list.get(i).getObjectId()+list.get(i).getName()+list.get(i).getId());
                             UserInfo userInfo=new UserInfo();
                             userInfo.setId(list.get(i).getObjectId());
@@ -432,7 +433,6 @@ public class AddFriendActivity extends BaseActivity{
                     toast("好友请求发送成功，等待验证");
                     log("好友请求发送成功，等待验证");
                     /*将添加好友状态改为true*/
-//                    log(user.getUsername()+"向"+info.getName()+"发出请求");
                     LoginTool.setSendAddFriendStatus(user.getUsername(),info.getName(),true);
 
                 } else {//发送失败

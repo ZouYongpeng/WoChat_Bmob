@@ -3,7 +3,7 @@
     package="com.example.wochat_bmob">
 
     <!-- 拨打电话 -->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 监听网络的变化 -->
@@ -21,6 +21,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- 通知震动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 开机 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".base.WoChatApplication"
@@ -86,16 +88,16 @@
 
         <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.ChatActivity" />
-        <activity android:name=".activity.MyDataActivity"></activity>
+        <activity android:name=".activity.MyDataActivity" />
 
         <provider
-            android:authorities="com.example.wochat_bmob.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.wochat_bmob.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
         <!--
         android:name：provider你可以使用v4包提供的FileProvider，或者自定义您自己的，只需要在name申明就好了，一般使用系统的就足够了。
@@ -103,6 +105,19 @@
         android:exported：false表示我们的provider不需要对外开放。
         android:grantUriPermissions：申明为true，你才能获取临时共享权限。
         -->
+        <receiver
+            android:name=".BroadcastReceiver.AutoOpenWoChatReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.WoChatService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

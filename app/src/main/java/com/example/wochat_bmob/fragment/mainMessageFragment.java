@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.wochat_bmob.R;
 import com.example.wochat_bmob.activity.AddFriendActivity;
 import com.example.wochat_bmob.activity.ChatActivity;
+import com.example.wochat_bmob.activity.UserInfoActivity;
 import com.example.wochat_bmob.base.BaseFragment;
 import com.example.wochat_bmob.bean.MainMessage;
 import com.example.wochat_bmob.bean.NewFriendMainMessage;
@@ -38,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
@@ -56,12 +60,17 @@ public class mainMessageFragment extends BaseFragment{
 
     private static final String TAG="mainMessageFragment";
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.message_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private RecyclerView messagesRecyclerView;
+    @BindView(R.id.main_fragment_message)
+    RecyclerView messagesRecyclerView;
+
     private MessageAdapter messageAdapter;
 
     private List<MainMessage> mMainMessages;
+
+    private Unbinder mUnbinder;
 
     /*注意：不能在这里声明控件*/
 
@@ -70,8 +79,8 @@ public class mainMessageFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_message,container,false);
+        ButterKnife.bind(this,view);
 
-        mSwipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.message_swipe_refresh);
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent)); // 进度动画颜色
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -81,7 +90,6 @@ public class mainMessageFragment extends BaseFragment{
             }
         });
         /*对视图与fragment进行关联*/
-        messagesRecyclerView=(RecyclerView) view.findViewById(R.id.main_fragment_message);
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMainMessages=new ArrayList<>();
         /*更新UI*/
@@ -93,7 +101,6 @@ public class mainMessageFragment extends BaseFragment{
     private void updateUI(){
         messageAdapter=new MessageAdapter(getConversations());
         messagesRecyclerView.setAdapter(messageAdapter);
-//        show(getConversations());
     }
 
     private void addItemTouch(){
@@ -149,7 +156,6 @@ public class mainMessageFragment extends BaseFragment{
         private TextView messageTime;
 
         public MessageHolder(LayoutInflater inflater,ViewGroup parent){
-
             super(inflater.inflate(R.layout.messages_list,parent,false));
             /*实例化相关组件*/
             messageFriendHead=(ImageView) itemView.findViewById(R.id.message_friend_head);
@@ -192,6 +198,12 @@ public class mainMessageFragment extends BaseFragment{
             switch (v.getId()){
                 case R.id.message_friend_head:
 //                    ToastTool.show(getActivity(),"查看 "+mMainMessage.getcName()+" 的个人资料");
+                    Bundle bundle=new Bundle();
+                    bundle.putString("name",mMainMessage.getcName());
+                    bundle.putString("way","chat");
+                    Intent intent=new Intent(getActivity(),UserInfoActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                     break;
                 default:
 //                    ToastTool.show(getActivity(),"点击item:"+mMainMessage.getcName());
@@ -237,10 +249,6 @@ public class mainMessageFragment extends BaseFragment{
     /*创建Adaptern内部类*/
     private class MessageAdapter extends RecyclerView.Adapter<MessageHolder> {
 
-//        private List<MainMessage> mMainMessages;
-//        public MessageAdapter(List<MainMessage> messages){
-//            mMainMessages=messages;
-//        }
         public MessageAdapter(List<MainMessage> messages){
             mMainMessages=messages;
         }
@@ -252,7 +260,6 @@ public class mainMessageFragment extends BaseFragment{
             return new MessageHolder(layoutInflater,parent);
         }
 
-        /**/
         @Override
         public void onBindViewHolder(MessageHolder holder, int position) {
             MainMessage message=mMainMessages.get(position);
@@ -275,7 +282,6 @@ public class mainMessageFragment extends BaseFragment{
     public void onResume() {
         super.onResume();
         updateUI();
-//        sw_refresh.setRefreshing(true);
     }
 
     @Override
@@ -289,15 +295,7 @@ public class mainMessageFragment extends BaseFragment{
         super.onStop();
     }
 
-    /*查询本地会话*/
-//    public void query(){
-////        adapter.bindDatas(getConversations());
-////        adapter.notifyDataSetChanged();
-////        sw_refresh.setRefreshing(false);
-//    }
-
     /*获取会话列表的数据：增加新朋友会话*/
-//    private List<MainMessage> getConversations(){
     private List<MainMessage> getConversations(){
         //添加会话
         List<MainMessage> conversationList = new ArrayList<>();
@@ -315,7 +313,6 @@ public class mainMessageFragment extends BaseFragment{
                 }
             }
         }
-        show(conversationList);
         //添加新朋友会话-获取好友请求表中最新一条记录
         List<NewFriend> friends = NewFriendManager.getInstance(getActivity()).getAllNewFriend();
         if(friends!=null && friends.size()>0){
@@ -335,9 +332,7 @@ public class mainMessageFragment extends BaseFragment{
         updateUI();
     }
 
-    /**注册离线消息接收事件
-     * @param event
-     */
+    /*注册离线消息接收事件*/
     @Subscribe
     public void onEventMainThread(OfflineMessageEvent event){
         //重新刷新列表
@@ -355,11 +350,4 @@ public class mainMessageFragment extends BaseFragment{
         updateUI();
     }
 
-    public void show(List<MainMessage> ml){
-        for (int i=0;i<ml.size();i++){
-            MainMessage p=ml.get(i);
-
-            Log.d("show",p.getLastMessageContent()+p.getcName());
-        }
-    }
 }

@@ -101,6 +101,41 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void log(String msg){
-        Log.d(getLocalClassName(),msg);
+        Log.d(getLocalClassName()+"_zyp",msg);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(doubleExitAppEnable()) {//判断是否需要双击退出
+            exitAppDoubleClick();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public boolean doubleExitAppEnable() {
+        return false;
+    }
+
+    /*双击退出函数变量*/
+    private long exitTime = 0;
+    /*双击退出APP*/
+    private void exitAppDoubleClick() {
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            toast("再按一次退出程序");
+            exitTime = System.currentTimeMillis();
+        } else {
+            exitApp();
+        }
+    }
+
+    /**
+     * 退出APP
+     */
+    private void exitApp() {
+        onDestroy();
+        super.onBackPressed();
+        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

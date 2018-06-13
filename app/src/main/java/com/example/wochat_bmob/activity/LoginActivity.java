@@ -65,16 +65,10 @@ public class LoginActivity extends BaseActivity {
 
     ProgressDialog dialog;
 
-    public static Intent ToLogin (Context packageContext){
-        Intent intent=new Intent(packageContext,MainActivity.class);
-        return intent;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        Bmob.initialize(this, "257f546c5a44cb4c1878fad6fb621a30");
 
         /*获取上次登录的用户名*/
         String formerLogin= LoginTool.getFormerLogin();
@@ -175,7 +169,6 @@ public class LoginActivity extends BaseActivity {
                 if (e==null){
                     //登录成功
                     log("登录成功");
-//                    toast("登录成功");
                     loginSuccess(userName,userPass);
                 }else {
                     log(e.getMessage() + "(" + e.getErrorCode() + ")");

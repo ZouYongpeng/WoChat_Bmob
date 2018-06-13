@@ -1,10 +1,17 @@
 package com.example.wochat_bmob.activity;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -39,6 +46,7 @@ import com.example.wochat_bmob.db.NewFriendManager;
 import com.example.wochat_bmob.events.RefreshEvent;
 import com.example.wochat_bmob.fragment.mainFriendsFragment;
 import com.example.wochat_bmob.fragment.mainMessageFragment;
+import com.example.wochat_bmob.service.WoChatService;
 import com.example.wochat_bmob.tools.FragmentAdapter;
 import com.example.wochat_bmob.tools.LoginTool;
 import com.example.wochat_bmob.tools.ToastTool;
@@ -106,6 +114,23 @@ public class MainActivity extends BaseActivity
 
     private Dialog mAboutDialog;
 
+    private IntentFilter mIntentFilter;
+    private NetworkChangeReceiver mNetworkChangeReceiver;
+
+    private WoChatService.showForegroundBinder mForegroundBinder;
+
+    private ServiceConnection foregroundCon=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mForegroundBinder=(WoChatService.showForegroundBinder) service;
+            mForegroundBinder.show(user.getUsername());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +144,8 @@ public class MainActivity extends BaseActivity
         initViewPage();//初始化ViewPage
         initFragment();//初始化碎片
         initConnection();//初始化连接
+        openWoChatService();
+        openNetworkChangeReceiver();
     }
 
     @Override
@@ -427,12 +454,58 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
+    private void openNetworkChangeReceiver(){
+        mIntentFilter=new IntentFilter();
+        mIntentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        mNetworkChangeReceiver=new NetworkChangeReceiver();
+        registerReceiver(mNetworkChangeReceiver,mIntentFilter);
+    }
+
+    class NetworkChangeReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context,Intent intent){
+            ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+            if (networkInfo!=null && networkInfo.isAvailable()){
+                toast("网络已连接");
+                log("网络已连接");
+
+            }else {
+                toast("网络已断开");
+                log("网络已断开");
+            }
+        }
+    }
+
+    private void openWoChatService(){
+        Intent openWoChatService=new Intent(this, WoChatService.class);
+//        startService(openWoChatService);
+        bindService(openWoChatService,foregroundCon,BIND_AUTO_CREATE);
+    }
+
     @Override
     protected void onDestroy() {
         log("onDestroy()");
+        Intent stopWoChatService=new Intent(this, WoChatService.class);
+        unbindService(foregroundCon);
         super.onDestroy();
         //清理导致内存泄露的资源
         BmobIM.getInstance().clear();
+        unregisterReceiver(mNetworkChangeReceiver);
+    }
+
+    @Override
+    public boolean doubleExitAppEnable() {
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mainLayout.isDrawerOpen(GravityCompat.START)) {
+            mainLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
 

@@ -112,7 +112,7 @@ public class UserInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-
+        ButterKnife.bind(this);
         Bundle bundle= getIntent().getExtras();
         String name=bundle.getString("name");
         /*判断way

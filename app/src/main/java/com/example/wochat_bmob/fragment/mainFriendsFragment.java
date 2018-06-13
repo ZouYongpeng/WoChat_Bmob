@@ -34,6 +34,9 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -47,9 +50,11 @@ public class mainFriendsFragment extends BaseFragment {
 
     private static final String TAG="mainFriendsFragment";
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.friend_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private RecyclerView friendsRecyclerView;
+    @BindView(R.id.main_fragment_friend)
+    RecyclerView friendsRecyclerView;
 
     private FriendAdapter friendsAdapter;
 
@@ -60,7 +65,7 @@ public class mainFriendsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_friends,null);
-        mSwipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.friend_swipe_refresh);
+        ButterKnife.bind(this,view);
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent)); // 进度动画颜色
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -69,9 +74,7 @@ public class mainFriendsFragment extends BaseFragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        friendsRecyclerView=(RecyclerView) view.findViewById(R.id.main_fragment_friend);
         friendsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        friendsRecyclerView.setAdapter(friendsAdapter);
         updateFriends();
         return view;
     }
@@ -89,33 +92,24 @@ public class mainFriendsFragment extends BaseFragment {
             super(inflater.inflate(R.layout.friends_list,parent,false));
             friendHead=(ImageView)itemView.findViewById(R.id.friend_head);
             friendName=(TextView)itemView.findViewById(R.id.friend_name);
-
             itemView.setOnClickListener(this);
         }
 
         private void bind(Friend friend){
             mFriend=friend;
             mUser=mFriend.getFriendUser();
-            log("bind--"+friend.getFriendUser().getUsername());
             friendName.setText(friend.getFriendUser().getUsername());
         }
 
         /*点击事件*/
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.friend_head:
-
-                    break;
-                default:
-                    Bundle bundle=new Bundle();
-                    bundle.putString("name",mUser.getUsername());
-                    bundle.putString("way","chat");
-                    Intent intent=new Intent(getActivity(),UserInfoActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    break;
-            }
+            Bundle bundle=new Bundle();
+            bundle.putString("name",mUser.getUsername());
+            bundle.putString("way","chat");
+            Intent intent=new Intent(getActivity(),UserInfoActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 
@@ -128,11 +122,6 @@ public class mainFriendsFragment extends BaseFragment {
             }
         }
 
-        public void setFriends(List<Friend> friends){
-            mFriends.clear();
-            mFriends=friends;
-        }
-
         public FriendsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater=LayoutInflater.from(getActivity());
             return new FriendsHolder(layoutInflater,parent);
@@ -142,7 +131,6 @@ public class mainFriendsFragment extends BaseFragment {
         public void onBindViewHolder(FriendsHolder holder, int position) {
             Friend friend=mFriends.get(position);
             holder.bind(friend);
-
         }
 
         @Override
@@ -200,13 +188,11 @@ public class mainFriendsFragment extends BaseFragment {
                     }
                     if (friends!=null){
                         friendsAdapter=new FriendAdapter(friends);
-//                    friendsAdapter.setFriends(friends);
-//                    friendsAdapter.notifyDataSetChanged();
                         friendsRecyclerView.setAdapter(friendsAdapter);
                     }
-
                 }
             }
         });
     }
+
 }
